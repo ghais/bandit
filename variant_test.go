@@ -4,23 +4,22 @@ import (
 	"testing"
 )
 
-
 func TestObserve(t *testing.T) {
 	var variantsTest = []struct {
 		reward float64
-		in variant
-		out variant
+		in     variant
+		out    variant
 	}{
-		{0,variant{}, variant{0, 0, 1}},
-		{0.1, variant{0,0,1}, variant{0.1, 0.1 * 0.1, 2}},
+		{0, variant{}, variant{0, 0, 1}},
+		{0.1, variant{0, 0, 1}, variant{0.1, 0.1 * 0.1, 2}},
 		{0.9, variant{0.1, 0.5, 2}, variant{1, 1.31, 3}},
 	}
 
 	// Check that two variants are equal within a certain delta to account for floating point arithmetic.
-	checkEquals := func(a,b Variant) bool {
+	checkEquals := func(a, b Variant) bool {
 		delta := 0.000001
-		return (a.RewardSum() - b.RewardSum() < delta) &&
-			(a.RewardSquareSum() - b.RewardSquareSum() < delta) &&
+		return (a.RewardSum()-b.RewardSum() < delta) &&
+			(a.RewardSquareSum()-b.RewardSquareSum() < delta) &&
 			a.ObservationCount() == b.ObservationCount()
 	}
 
@@ -48,4 +47,3 @@ func TestObserveWrongRange(t *testing.T) {
 		t.Errorf("Expecting to fail with an out of range reward error for %f", 1.0001)
 	}
 }
-

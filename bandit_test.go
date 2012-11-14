@@ -3,12 +3,13 @@ package bandit
 import (
 	"testing"
 )
+
 func TestRoundIndex(t *testing.T) {
 	var tests = []struct {
-		in []Variant
+		in  []Variant
 		out int
 	}{
-		{[]Variant{},0},
+		{[]Variant{}, 0},
 		{[]Variant{variant{}}, 0},
 		{[]Variant{variant{0, 0, 1}}, 1},
 		{[]Variant{variant{0, 0, 1}, variant{0, 0, 2}}, 3},
@@ -20,16 +21,15 @@ func TestRoundIndex(t *testing.T) {
 	}
 }
 
-
 func TestVariantMean(t *testing.T) {
 	var tests = []struct {
-		in variant
+		in  variant
 		out float64
 	}{
 		{variant{}, 0},
 		{variant{0, 0, 1}, 0},
-		{variant{1,1, 1}, 1},
-		{variant{1,1, 2}, 0.5},
+		{variant{1, 1, 1}, 1},
+		{variant{1, 1, 2}, 0.5},
 	}
 
 	for _, v := range tests {
@@ -41,16 +41,16 @@ func TestVariantMean(t *testing.T) {
 
 func TestObservedCount(t *testing.T) {
 	var tests = []struct {
-		in []Variant
+		in  []Variant
 		out int
-	} {
+	}{
 		{[]Variant{}, 0},
-		{[]Variant{variant{0,0,0}}, 0},
-		{[]Variant{variant{0,0,0}, variant{0,0,0}}, 0},
-		{[]Variant{variant{0,0,1}, variant{0,0,0}}, 1},
-		{[]Variant{variant{0,0,0}, variant{0,0,2}}, 1},
-		{[]Variant{variant{0,0,3}, variant{0,0,2}}, 2},
-		{[]Variant{variant{0,0,3},variant{0,0,0}, variant{0,0,2}}, 2},
+		{[]Variant{variant{0, 0, 0}}, 0},
+		{[]Variant{variant{0, 0, 0}, variant{0, 0, 0}}, 0},
+		{[]Variant{variant{0, 0, 1}, variant{0, 0, 0}}, 1},
+		{[]Variant{variant{0, 0, 0}, variant{0, 0, 2}}, 1},
+		{[]Variant{variant{0, 0, 3}, variant{0, 0, 2}}, 2},
+		{[]Variant{variant{0, 0, 3}, variant{0, 0, 0}, variant{0, 0, 2}}, 2},
 	}
 
 	for _, v := range tests {
@@ -60,20 +60,19 @@ func TestObservedCount(t *testing.T) {
 	}
 }
 
-
 func TestTwiceObservedCount(t *testing.T) {
 	var tests = []struct {
-		in []Variant
+		in  []Variant
 		out int
-	} {
+	}{
 		{[]Variant{}, 0},
-		{[]Variant{variant{0,0,0}}, 0},
-		{[]Variant{variant{0,0,0}, variant{0,0,0}}, 0},
-		{[]Variant{variant{0,0,1}, variant{0,0,0}}, 0},
-		{[]Variant{variant{0,0,0}, variant{0,0,2}}, 1},
-		{[]Variant{variant{0,0,1}, variant{0,0,2}}, 1},
-		{[]Variant{variant{0,0,3}, variant{0,0,2}}, 2},
-		{[]Variant{variant{0,0,3},variant{0,0,0}, variant{0,0,2}}, 2},
+		{[]Variant{variant{0, 0, 0}}, 0},
+		{[]Variant{variant{0, 0, 0}, variant{0, 0, 0}}, 0},
+		{[]Variant{variant{0, 0, 1}, variant{0, 0, 0}}, 0},
+		{[]Variant{variant{0, 0, 0}, variant{0, 0, 2}}, 1},
+		{[]Variant{variant{0, 0, 1}, variant{0, 0, 2}}, 1},
+		{[]Variant{variant{0, 0, 3}, variant{0, 0, 2}}, 2},
+		{[]Variant{variant{0, 0, 3}, variant{0, 0, 0}, variant{0, 0, 2}}, 2},
 	}
 
 	for _, v := range tests {
@@ -82,9 +81,6 @@ func TestTwiceObservedCount(t *testing.T) {
 		}
 	}
 }
-
-
-
 
 func TestEpsilonGreedy(t *testing.T) {
 	// In these tests we make use of the following facts about the function itself
@@ -95,21 +91,21 @@ func TestEpsilonGreedy(t *testing.T) {
 
 	var tests = []struct {
 		epsilon float64
-		in []Variant
-		out Variant
-	} {
-		{0, []Variant{variant{}}, variant{}}, //random
-		{1, []Variant{variant{0,0,1}}, variant{0,0,1}}, //random
-		{-1, []Variant{variant{0, 0, 1}}, variant{0, 0, 1}}, // When we have a single variant always return it.
-		{-1, []Variant{variant{0,0,0}, variant{1,1,1}}, variant{1,1,1}}, // the one with the greater mean
-		{-1, []Variant{variant{1,1,1}, variant{}}, variant{1,1,1}}, // the one with the greater mean
+		in      []Variant
+		out     Variant
+	}{
+		{0, []Variant{variant{}}, variant{}},                                  //random
+		{1, []Variant{variant{0, 0, 1}}, variant{0, 0, 1}},                    //random
+		{-1, []Variant{variant{0, 0, 1}}, variant{0, 0, 1}},                   // When we have a single variant always return it.
+		{-1, []Variant{variant{0, 0, 0}, variant{1, 1, 1}}, variant{1, 1, 1}}, // the one with the greater mean
+		{-1, []Variant{variant{1, 1, 1}, variant{}}, variant{1, 1, 1}},        // the one with the greater mean
 	}
 
 	// Check that two variants are equal within a certain delta to account for floating point arithmetic.
-	checkEquals := func(a,b Variant) bool {
+	checkEquals := func(a, b Variant) bool {
 		delta := 0.000001
-		return (a.RewardSum() - b.RewardSum() < delta) &&
-			(a.RewardSquareSum() - b.RewardSquareSum() < delta) &&
+		return (a.RewardSum()-b.RewardSum() < delta) &&
+			(a.RewardSquareSum()-b.RewardSquareSum() < delta) &&
 			a.ObservationCount() == b.ObservationCount()
 	}
 
@@ -122,9 +118,8 @@ func TestEpsilonGreedy(t *testing.T) {
 	//Test the case where we provide no []Variants to select from
 	testValues := []float64{0, 1, -1, 0.5}
 	for _, epsilon := range testValues {
-	if v := EpsilonGreedy(epsilon, []Variant{}); v != nil {
+		if v := EpsilonGreedy(epsilon, []Variant{}); v != nil {
 			t.Errorf("epsilon = %d => Expecting the method to return nil when no variants are provided but found %v", v)
 		}
-	}	
+	}
 }
-
