@@ -94,6 +94,37 @@ func EpsilonDecreasing(e0 float64, variants []Variant) Variant {
 	return greatestMean(variants)
 }
 
+// Heuristic policy for multi-armed bandit problem.
+// Implementation is based on the algorithm presented by Auer et al in
+// "Finite-Time Analysis of the Multiarmed Bandit Problem" (2002).
+func Ucb1(variants []Variant) Variant {
+	if len(variants) == 0 {
+		return nil
+	}
+	maxUcb1 := math.Inf(-1)
+	maxUcbIndex := -1
+	//access the array in a randomized fashion so repeated invocations of this function don't return the same value.
+	for _, index := range rand.Perm(len(variants)) {
+		v := variants[index]
+		if v.ObservationCount() == 0 {
+			// If we have never played this variant play it now.
+			return v
+		}
+
+		ucb1 := rank(v, RoundIndex(variants)) // the true mean.
+		if ucb1 > maxUcb1 {
+			maxUcb1 = ucb1
+			maxUcbIndex = index
+		}
+	}
+	return variants[maxUcbIndex]
+}
+
+// Rank is ucb1 value = mean + confidence bound
+func rank(v Variant, totalObservations int) float64 {
+	return Mean(v) + math.Sqrt(2.0*math.Log(float64(totalObservations))/float64(v.ObservationCount()))
+}
+
 //Play the variant with the greatest mean.
 func greatestMean(variants []Variant) (result Variant) {
 	maxMean := math.Inf(-1) //Set initial max mean to -Infinity
