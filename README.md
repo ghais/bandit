@@ -24,7 +24,7 @@ The in-memory variant implementation is immutable, and therefore when calling th
 you should re-assign it:
 ```go
 v := bandit.NewVaraint()
-v = v.Observe(0.5)
+v, _ = v.Observe(0.5)
 ```
 
 Algorithms and Examples
