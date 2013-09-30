@@ -1,6 +1,7 @@
 bandit
 ======
 [![Build Status](https://travis-ci.org/ghais/bandit.png?branch=master)](https://travis-ci.org/ghais/bandit)
+[![Coverage Status](https://coveralls.io/repos/ghais/bandit/badge.png)](https://coveralls.io/r/ghais/bandit)
 
 For more iformation see about [Multiarmed Bandit](http://en.wikipedia.org/wiki/Multi-armed_bandit)
 
