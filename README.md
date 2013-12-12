@@ -3,7 +3,7 @@ bandit
 [![Build Status](https://travis-ci.org/ghais/bandit.png?branch=master)](https://travis-ci.org/ghais/bandit)
 [![Coverage Status](https://coveralls.io/repos/ghais/bandit/badge.png)](https://coveralls.io/r/ghais/bandit)
 
-For more iformation see about [Multiarmed Bandit](http://en.wikipedia.org/wiki/Multi-armed_bandit)
+For more information see [Multiarmed Bandit](http://en.wikipedia.org/wiki/Multi-armed_bandit)
 
 Types
 -----
@@ -54,7 +54,7 @@ the highest estimated mean, except when a randome lever is pulled with an epsilo
 The function will return nil if len(variants) == 0
 ```go
 variants := []Variant{bandit.NewVariant(), bandit.NewVariant(), bandit.NewVariant()}
-v, _ := bandit.EpsilonGreedy(0.1,variants)
+v, _ := bandit.EpsilonGreedy(0.1, variants)
 ```
 
 Docmentation
