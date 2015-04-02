@@ -49,7 +49,7 @@ variants := []Variant{bandit.NewVariant(), bandit.NewVariant(), bandit.NewVarian
 v, _ := bandit.EpsilonDecreasing(1000,variants)
 ```
 * *EpsilonGreedy*:
-This is the most simple of strategies. Intuitively it basically always pulls the lever with
+This is the simplest of strategies. Intuitively it basically always pulls the lever with
 the highest estimated mean, except when a randome lever is pulled with an epsilon frequency.
 The function will return nil if len(variants) == 0
 ```go
